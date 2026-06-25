@@ -314,31 +314,15 @@ var MESES_NOMBRES = ["ENE","FEB","MAR","ABR","MAY","JUN","JUL","AGO","SEP","OCT"
 
 
   // ── LOGIN ──────────────────────────────────────────────────────────────
-  // Contraseña: siamo2026sgi (puedes cambiarla aquí)
-  var PASS_HASH = "73c2d2f5a5b8e1c3e7f9a4b6d0e2f4c8"; // MD5 de "siamo2026sgi"
-
-  function simpleHash(str){
-    // Hash simple para no exponer la clave en texto plano
-    var hash=0;
-    for(var i=0;i<str.length;i++){
-      var c=str.charCodeAt(i);
-      hash=((hash<<5)-hash)+c;
-      hash=hash&hash;
-    }
-    return Math.abs(hash).toString(16).padStart(8,'0');
-  }
-
-  var PASS_SIMPLE = simpleHash("siamo2026sgi"); // Hash real
+  var PASS = "siamo2026sgi";
 
   function login(){
-    var input=g("loginPass"); if(!input) return;
-    var val=input.value.trim();
-    var err=g("loginError");
-    if(simpleHash(val)===PASS_SIMPLE){
-      var overlay=g("loginOverlay");
-      if(overlay) overlay.style.display="none";
-      // Guardar sesión por 8 horas
-      sessionStorage.setItem("sgi_auth", PASS_SIMPLE);
+    var input = document.getElementById("loginPass");
+    var err   = document.getElementById("loginError");
+    if(!input) return;
+    if(input.value.trim() === PASS){
+      document.getElementById("loginOverlay").style.display = "none";
+      sessionStorage.setItem("sgi_ok","1");
       if(err) err.style.display="none";
     } else {
       if(err) err.style.display="block";
@@ -348,10 +332,9 @@ var MESES_NOMBRES = ["ENE","FEB","MAR","ABR","MAY","JUN","JUL","AGO","SEP","OCT"
   }
 
   function checkAuth(){
-    var stored=sessionStorage.getItem("sgi_auth");
-    if(stored===PASS_SIMPLE){
-      var overlay=g("loginOverlay");
-      if(overlay) overlay.style.display="none";
+    if(sessionStorage.getItem("sgi_ok")==="1"){
+      var o=document.getElementById("loginOverlay");
+      if(o) o.style.display="none";
     }
   }
 
